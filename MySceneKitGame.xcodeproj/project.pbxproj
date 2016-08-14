@@ -7,14 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A289BD201D61052200D2E53D /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = A289BD1F1D61052200D2E53D /* Explode.scnp */; };
 		A2E464751D5EDF44009F884C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E464741D5EDF44009F884C /* AppDelegate.swift */; };
-		A2E464771D5EDF44009F884C /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A2E464761D5EDF44009F884C /* art.scnassets */; };
 		A2E464791D5EDF44009F884C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E464781D5EDF44009F884C /* GameViewController.swift */; };
 		A2E4647C1D5EDF44009F884C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E4647A1D5EDF44009F884C /* Main.storyboard */; };
 		A2E4647E1D5EDF45009F884C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2E4647D1D5EDF45009F884C /* Assets.xcassets */; };
 		A2E464811D5EDF45009F884C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E4647F1D5EDF45009F884C /* LaunchScreen.storyboard */; };
 		A2E4648C1D5EDF45009F884C /* MySceneKitGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4648B1D5EDF45009F884C /* MySceneKitGameTests.swift */; };
 		A2E464971D5EDF45009F884C /* MySceneKitGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E464961D5EDF45009F884C /* MySceneKitGameUITests.swift */; };
+		A2E465251D5F06B1009F884C /* GeometryFighter.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = A2E465241D5F06B1009F884C /* GeometryFighter.scnassets */; };
+		A2E465271D5F0DA2009F884C /* ShapeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E465261D5F0DA2009F884C /* ShapeType.swift */; };
+		A2E465301D5F13E2009F884C /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E465291D5F13E2009F884C /* Double+Extensions.swift */; };
+		A2E465311D5F13E2009F884C /* Float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4652A1D5F13E2009F884C /* Float+Extensions.swift */; };
+		A2E465321D5F13E2009F884C /* GameHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4652B1D5F13E2009F884C /* GameHelper.swift */; };
+		A2E465331D5F13E2009F884C /* Generics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4652C1D5F13E2009F884C /* Generics.swift */; };
+		A2E465341D5F13E2009F884C /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4652D1D5F13E2009F884C /* Int+Extensions.swift */; };
+		A2E465351D5F13E2009F884C /* SCNAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4652E1D5F13E2009F884C /* SCNAction+Extensions.swift */; };
+		A2E465361D5F13E2009F884C /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E4652F1D5F13E2009F884C /* UIColor+Extensions.swift */; };
+		A2E4653A1D5FDC0D009F884C /* Trail.scnp in Resources */ = {isa = PBXBuildFile; fileRef = A2E465381D5FDC0D009F884C /* Trail.scnp */; };
+		A2E4653B1D5FDC0D009F884C /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = A2E465391D5FDC0D009F884C /* spark.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,9 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A289BD1F1D61052200D2E53D /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; name = Explode.scnp; path = ../Explode.scnp; sourceTree = "<group>"; };
 		A2E464711D5EDF44009F884C /* MySceneKitGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySceneKitGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E464741D5EDF44009F884C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A2E464761D5EDF44009F884C /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		A2E464781D5EDF44009F884C /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A2E4647B1D5EDF44009F884C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A2E4647D1D5EDF45009F884C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +60,17 @@
 		A2E464921D5EDF45009F884C /* MySceneKitGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MySceneKitGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E464961D5EDF45009F884C /* MySceneKitGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySceneKitGameUITests.swift; sourceTree = "<group>"; };
 		A2E464981D5EDF45009F884C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2E465241D5F06B1009F884C /* GeometryFighter.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = GeometryFighter.scnassets; sourceTree = "<group>"; };
+		A2E465261D5F0DA2009F884C /* ShapeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeType.swift; sourceTree = "<group>"; };
+		A2E465291D5F13E2009F884C /* Double+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
+		A2E4652A1D5F13E2009F884C /* Float+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Extensions.swift"; sourceTree = "<group>"; };
+		A2E4652B1D5F13E2009F884C /* GameHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameHelper.swift; sourceTree = "<group>"; };
+		A2E4652C1D5F13E2009F884C /* Generics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generics.swift; sourceTree = "<group>"; };
+		A2E4652D1D5F13E2009F884C /* Int+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		A2E4652E1D5F13E2009F884C /* SCNAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNAction+Extensions.swift"; sourceTree = "<group>"; };
+		A2E4652F1D5F13E2009F884C /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		A2E465381D5FDC0D009F884C /* Trail.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Trail.scnp; sourceTree = "<group>"; };
+		A2E465391D5FDC0D009F884C /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,13 +121,16 @@
 		A2E464731D5EDF44009F884C /* MySceneKitGame */ = {
 			isa = PBXGroup;
 			children = (
+				A2E465371D5FDB6A009F884C /* Particles */,
+				A2E465281D5F13E2009F884C /* GameUtils */,
+				A2E465241D5F06B1009F884C /* GeometryFighter.scnassets */,
 				A2E464741D5EDF44009F884C /* AppDelegate.swift */,
-				A2E464761D5EDF44009F884C /* art.scnassets */,
 				A2E464781D5EDF44009F884C /* GameViewController.swift */,
 				A2E4647A1D5EDF44009F884C /* Main.storyboard */,
 				A2E4647D1D5EDF45009F884C /* Assets.xcassets */,
 				A2E4647F1D5EDF45009F884C /* LaunchScreen.storyboard */,
 				A2E464821D5EDF45009F884C /* Info.plist */,
+				A2E465261D5F0DA2009F884C /* ShapeType.swift */,
 			);
 			path = MySceneKitGame;
 			sourceTree = "<group>";
@@ -126,6 +151,30 @@
 				A2E464981D5EDF45009F884C /* Info.plist */,
 			);
 			path = MySceneKitGameUITests;
+			sourceTree = "<group>";
+		};
+		A2E465281D5F13E2009F884C /* GameUtils */ = {
+			isa = PBXGroup;
+			children = (
+				A2E465291D5F13E2009F884C /* Double+Extensions.swift */,
+				A2E4652A1D5F13E2009F884C /* Float+Extensions.swift */,
+				A2E4652B1D5F13E2009F884C /* GameHelper.swift */,
+				A2E4652C1D5F13E2009F884C /* Generics.swift */,
+				A2E4652D1D5F13E2009F884C /* Int+Extensions.swift */,
+				A2E4652E1D5F13E2009F884C /* SCNAction+Extensions.swift */,
+				A2E4652F1D5F13E2009F884C /* UIColor+Extensions.swift */,
+			);
+			path = GameUtils;
+			sourceTree = "<group>";
+		};
+		A2E465371D5FDB6A009F884C /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				A289BD1F1D61052200D2E53D /* Explode.scnp */,
+				A2E465381D5FDC0D009F884C /* Trail.scnp */,
+				A2E465391D5FDC0D009F884C /* spark.png */,
+			);
+			name = Particles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +245,7 @@
 				TargetAttributes = {
 					A2E464701D5EDF43009F884C = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 9DQEFXRBL8;
 					};
 					A2E464861D5EDF45009F884C = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -232,10 +282,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2E464771D5EDF44009F884C /* art.scnassets in Resources */,
+				A2E4653A1D5FDC0D009F884C /* Trail.scnp in Resources */,
+				A2E4653B1D5FDC0D009F884C /* spark.png in Resources */,
 				A2E464811D5EDF45009F884C /* LaunchScreen.storyboard in Resources */,
 				A2E4647E1D5EDF45009F884C /* Assets.xcassets in Resources */,
 				A2E4647C1D5EDF44009F884C /* Main.storyboard in Resources */,
+				A289BD201D61052200D2E53D /* Explode.scnp in Resources */,
+				A2E465251D5F06B1009F884C /* GeometryFighter.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,8 +313,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2E465311D5F13E2009F884C /* Float+Extensions.swift in Sources */,
+				A2E465361D5F13E2009F884C /* UIColor+Extensions.swift in Sources */,
+				A2E465301D5F13E2009F884C /* Double+Extensions.swift in Sources */,
+				A2E465351D5F13E2009F884C /* SCNAction+Extensions.swift in Sources */,
+				A2E465331D5F13E2009F884C /* Generics.swift in Sources */,
 				A2E464791D5EDF44009F884C /* GameViewController.swift in Sources */,
+				A2E465271D5F0DA2009F884C /* ShapeType.swift in Sources */,
+				A2E465341D5F13E2009F884C /* Int+Extensions.swift in Sources */,
 				A2E464751D5EDF44009F884C /* AppDelegate.swift in Sources */,
+				A2E465321D5F13E2009F884C /* GameHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +464,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = MySceneKitGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.MySceneKitGame;
@@ -414,6 +476,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = MySceneKitGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.MySceneKitGame;
@@ -488,6 +551,7 @@
 				A2E4649D1D5EDF45009F884C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A2E4649E1D5EDF45009F884C /* Build configuration list for PBXNativeTarget "MySceneKitGameTests" */ = {
 			isa = XCConfigurationList;
@@ -496,6 +560,7 @@
 				A2E464A01D5EDF45009F884C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A2E464A11D5EDF45009F884C /* Build configuration list for PBXNativeTarget "MySceneKitGameUITests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +569,7 @@
 				A2E464A31D5EDF45009F884C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
