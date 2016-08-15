@@ -57,7 +57,7 @@ class GameViewController: UIViewController {
         // 2
         cameraNode.camera = SCNCamera()
         // 3
-        cameraNode.position = SCNVector3(x: 0, y: 5, z: 10)
+        cameraNode.position = SCNVector3(x: 0, y: 5, z: 12)
         // 4
         scnScene.rootNode.addChildNode(cameraNode)
     }
@@ -111,16 +111,27 @@ class GameViewController: UIViewController {
         scnScene.rootNode.addChildNode(geometryNode)
     }
     
+    func fireGun() {
+        let geometryNode = SCNNode(geometry: SCNSphere(radius: 0.1))
+        geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
+        geometryNode.physicsBody?.affectedByGravity = false
+        let force = SCNVector3(x: 0, y: 0, z: -50)
+ //       let position = SCNVector3(x: 0, y: 0, z: 0)
+        geometryNode.physicsBody?.applyForce(force, impulse: true)
+        geometryNode.geometry?.materials.first?.diffuse.contents = UIColor.blackColor()
+        scnScene.rootNode.addChildNode(geometryNode)
+    }
+    
     func cleanScene() {
         // 1
         for node in scnScene.rootNode.childNodes {
             // 2
-            if node.presentationNode.position.y < -2 {
+            if node.presentationNode.position.y < -2 ||
+               node.presentationNode.position.z < -100 {
                 // 3
                 node.removeFromParentNode()
             }
         }
-        cleanScene()
     }
     
     // 1
@@ -140,34 +151,24 @@ class GameViewController: UIViewController {
         scnScene.rootNode.addChildNode(game.hudNode)
     }
     
-    func handleTouchFor(node: SCNNode) {
-        if node.name == "GOOD" {
-            game.score += 1
-            createExplosion(node.geometry!, position: node.presentationNode.position,
-                            rotation: node.presentationNode.rotation)
-            node.removeFromParentNode()
-        } else if node.name == "BAD" {
-            game.lives -= 1
-            createExplosion(node.geometry!, position: node.presentationNode.position,
-                            rotation: node.presentationNode.rotation)
-            node.removeFromParentNode()
-        }
-    }
-    
+//    func handleTouchFor(node: SCNNode) {
+//        if node.name == "GOOD" {
+//            game.score += 1
+//            createExplosion(node.geometry!, position: node.presentationNode.position,
+//                            rotation: node.presentationNode.rotation)
+//            node.removeFromParentNode()
+//        } else if node.name == "BAD" {
+//            game.lives -= 1
+//            createExplosion(node.geometry!, position: node.presentationNode.position,
+//                            rotation: node.presentationNode.rotation)
+//            node.removeFromParentNode()
+//        }
+//    }
+//    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        // 1
-        let touch = touches.first!
-        // 2
-        let location = touch.locationInView(scnView)
-        // 3
-        let hitResults = scnView.hitTest(location, options: nil)
-        // 4
-        if hitResults.count > 0 {
-            // 5
-            let result = hitResults.first!
-            // 6
-            handleTouchFor(result.node)
-        }
+        dispatch_async(dispatch_get_main_queue(), {
+            self.fireGun()
+        })
     }
     
     func createExplosion(geometry: SCNGeometry, position: SCNVector3,
@@ -198,10 +199,13 @@ extension GameViewController: SCNSceneRendererDelegate {
     func renderer(renderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
         // 1
         if time > spawnTime {
-            spawnShape()
+            dispatch_async(dispatch_get_main_queue(), {
+                self.spawnShape()
+            })
             // 2
             spawnTime = time + NSTimeInterval(Float.random(min: 0.2, max: 1.5))
         }
+        cleanScene()
         game.updateHUD()
     }
 }
