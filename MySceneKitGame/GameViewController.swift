@@ -35,11 +35,8 @@ class GameViewController: UIViewController {
     
     func setupView() {
         scnView = self.view as! SCNView
-        // 1
         scnView.showsStatistics = true
-        // 2
         scnView.allowsCameraControl = false
-        // 3
         scnView.autoenablesDefaultLighting = true
         scnView.delegate = self
         scnView.playing = true
@@ -48,57 +45,45 @@ class GameViewController: UIViewController {
     func setupScene() {
         scnScene = SCNScene()
         scnView.scene = scnScene
+        scnScene.physicsWorld.contactDelegate = self
         scnScene.background.contents = "GeometryFighter.scnassets/Textures/Background_Diffuse.png"
     }
     
     func setupCamera() {
-        // 1
         cameraNode = SCNNode()
-        // 2
         cameraNode.camera = SCNCamera()
-        // 3
-        cameraNode.position = SCNVector3(x: 0, y: 5, z: 12)
-        // 4
+        cameraNode.position = SCNVector3(x: 0, y: 5, z: 20)
         scnScene.rootNode.addChildNode(cameraNode)
     }
     
     func spawnShape() {
-        // 1
         var geometry : SCNGeometry
-        // 2
         switch ShapeType.random() {
-        case .Sphere:
-            geometry = SCNSphere(radius: 1.0)
-        case .Pyramid:
-            geometry = SCNPyramid(width: 1.0, height: 1.0, length: 1.0)
-        case .Torus:
-            geometry = SCNTorus(ringRadius: 1.0, pipeRadius: 0.5)
-        case .Capsule:
-            geometry = SCNCapsule(capRadius: 1.0, height: 1.5)
-        case .Cylinder:
-            geometry = SCNCylinder(radius: 1.0, height: 1.5)
-        case .Cone:
-            geometry = SCNCone(topRadius: 0.0, bottomRadius: 1.0, height: 1.0)
-        case .Tube:
-            geometry = SCNTube(innerRadius: 0.5, outerRadius: 1.0, height: 1.0)
-        default:
-            // 3
-            geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
+            case .Sphere:
+                geometry = SCNSphere(radius: 1.0)
+            case .Pyramid:
+                geometry = SCNPyramid(width: 1.0, height: 1.0, length: 1.0)
+            case .Torus:
+                geometry = SCNTorus(ringRadius: 1.0, pipeRadius: 0.5)
+            case .Capsule:
+                geometry = SCNCapsule(capRadius: 1.0, height: 1.5)
+            case .Cylinder:
+                geometry = SCNCylinder(radius: 1.0, height: 1.5)
+            case .Cone:
+                geometry = SCNCone(topRadius: 0.0, bottomRadius: 1.0, height: 1.0)
+            case .Tube:
+                geometry = SCNTube(innerRadius: 0.5, outerRadius: 1.0, height: 1.0)
+            default:
+                geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
         }
-        // 4
         let geometryNode = SCNNode(geometry: geometry)
         //nil for the physics shape will automatically generate a shape based on the geometry of the node
         geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
-        // 1
         let randomX = Float.random(min: -2, max: 2)
         let randomY = Float.random(min: 10, max: 18)
-        // 2
         let force = SCNVector3(x: randomX, y: randomY , z: 0)
-        // 3
         let position = SCNVector3(x: 0.05, y: 0.05, z: 0.05)
-        // 4
         geometryNode.physicsBody?.applyForce(force, atPosition: position, impulse: true)
-        // 5
         let color = UIColor.random()
         geometry.materials.first?.diffuse.contents = color
         let trailEmitter = createTrail(color, geometry: geometry)
@@ -111,43 +96,36 @@ class GameViewController: UIViewController {
         scnScene.rootNode.addChildNode(geometryNode)
     }
     
-    func fireGun() {
+    func fireGun(direction: SCNVector3) {
         let geometryNode = SCNNode(geometry: SCNSphere(radius: 0.1))
         geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
         geometryNode.physicsBody?.affectedByGravity = false
-        let force = SCNVector3(x: 0, y: 0, z: -50)
- //       let position = SCNVector3(x: 0, y: 0, z: 0)
-        geometryNode.physicsBody?.applyForce(force, impulse: true)
+        geometryNode.physicsBody?.applyForce(direction, impulse: true)
         geometryNode.geometry?.materials.first?.diffuse.contents = UIColor.blackColor()
+        geometryNode.position.z = 18
+        geometryNode.name = "bullet"
+        geometryNode.physicsBody?.contactTestBitMask = 1
         scnScene.rootNode.addChildNode(geometryNode)
     }
     
     func cleanScene() {
-        // 1
         for node in scnScene.rootNode.childNodes {
-            // 2
-            if node.presentationNode.position.y < -2 ||
+            if node.presentationNode.position.y < -10 ||
                node.presentationNode.position.z < -100 {
-                // 3
                 node.removeFromParentNode()
             }
         }
     }
     
-    // 1
     func createTrail(color: UIColor, geometry: SCNGeometry) -> SCNParticleSystem {
-        // 2
         let trail = SCNParticleSystem(named: "Trail.scnp", inDirectory: nil)!
-        // 3
         trail.particleColor = color
-        // 4
         trail.emitterShape = geometry
-        // 5
         return trail
     }
     
     func setupHUD() {
-        game.hudNode.position = SCNVector3(x: 0.0, y: 10.0, z: 0.0)
+        game.hudNode.position = SCNVector3(x: 0.0, y: 15.0, z: 0.0)
         scnScene.rootNode.addChildNode(game.hudNode)
     }
     
@@ -166,46 +144,61 @@ class GameViewController: UIViewController {
 //    }
 //    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.fireGun()
-        })
+        let bulletQueue = dispatch_queue_create("bullet queue", DISPATCH_QUEUE_SERIAL)
+//        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_async(bulletQueue) {
+            let xDir = -(self.scnView.center.x - (touches.first?.locationInView(self.scnView).x)!)/3
+            let yDir = ((self.scnView.frame.maxY - (touches.first?.locationInView(self.scnView).y)!)/6)
+            self.fireGun(SCNVector3(xDir, yDir, -150))
+        }
     }
     
     func createExplosion(geometry: SCNGeometry, position: SCNVector3,
                          rotation: SCNVector4) {
-        // 2
-        let explosion =
-            SCNParticleSystem(named: "Explode.scnp", inDirectory:
-                nil)!
+        let explosion = SCNParticleSystem(named: "Explode.scnp", inDirectory: nil)!
         explosion.emitterShape = geometry
         explosion.birthLocation = .Surface
-        // 3
-        let rotationMatrix =
-            SCNMatrix4MakeRotation(rotation.w, rotation.x,
-                                   rotation.y, rotation.z)
-        let translationMatrix =
-            SCNMatrix4MakeTranslation(position.x, position.y,
-                                      position.z)
-        let transformMatrix =
-            SCNMatrix4Mult(rotationMatrix, translationMatrix)
-        // 4
-        scnScene.addParticleSystem(explosion, withTransform: 
-            transformMatrix)
+        let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x,
+                                                    rotation.y, rotation.z)
+        let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y,
+                                                          position.z)
+        let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+        scnScene.addParticleSystem(explosion, withTransform: transformMatrix)
+    }
+    
+//    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
+//        if contact.nodeA.name == "bullet" {
+//            createExplosion(contact.nodeB.geometry!, position: contact.nodeB.presentationNode.position,
+//                            rotation: contact.nodeB.presentationNode.rotation)
+//        } else if contact.nodeB.name == "bullet" {
+//            createExplosion(contact.nodeA.geometry!, position: contact.nodeA.presentationNode.position,
+//                            rotation: contact.nodeA.presentationNode.rotation)
+//        }
+//    }
+}
+
+extension GameViewController : SCNSceneRendererDelegate {
+    func renderer(renderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
+        if time > spawnTime {
+            let shapeQueue : dispatch_queue_t = dispatch_queue_create("shape queue", DISPATCH_QUEUE_SERIAL)
+            dispatch_async(shapeQueue) {
+                self.spawnShape()
+            }
+            spawnTime = time + NSTimeInterval(Float.random(min: 1.0, max: 3.0))
+            cleanScene()
+        }
+        game.updateHUD()
     }
 }
 
-extension GameViewController: SCNSceneRendererDelegate {
-    // 2
-    func renderer(renderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
-        // 1
-        if time > spawnTime {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.spawnShape()
-            })
-            // 2
-            spawnTime = time + NSTimeInterval(Float.random(min: 0.2, max: 1.5))
+extension GameViewController : SCNPhysicsContactDelegate {
+    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
+        if contact.nodeA.name == "bullet" {
+            createExplosion(contact.nodeB.geometry!, position: contact.nodeB.presentationNode.position,
+                            rotation: contact.nodeB.presentationNode.rotation)
+        } else if contact.nodeB.name == "bullet" {
+            createExplosion(contact.nodeA.geometry!, position: contact.nodeA.presentationNode.position,
+                            rotation: contact.nodeA.presentationNode.rotation)
         }
-        cleanScene()
-        game.updateHUD()
     }
 }
