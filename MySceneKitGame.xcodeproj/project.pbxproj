@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A289BD201D61052200D2E53D /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = A289BD1F1D61052200D2E53D /* Explode.scnp */; };
+		A2D2B85D1D64370300B4C1DB /* barrelSmoke.scnp in Resources */ = {isa = PBXBuildFile; fileRef = A2D2B85B1D64370300B4C1DB /* barrelSmoke.scnp */; };
+		A2D2B85E1D64370300B4C1DB /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = A2D2B85C1D64370300B4C1DB /* smoke.png */; };
 		A2E464751D5EDF44009F884C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E464741D5EDF44009F884C /* AppDelegate.swift */; };
 		A2E464791D5EDF44009F884C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E464781D5EDF44009F884C /* GameViewController.swift */; };
 		A2E4647C1D5EDF44009F884C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E4647A1D5EDF44009F884C /* Main.storyboard */; };
@@ -47,6 +49,8 @@
 
 /* Begin PBXFileReference section */
 		A289BD1F1D61052200D2E53D /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; name = Explode.scnp; path = ../Explode.scnp; sourceTree = "<group>"; };
+		A2D2B85B1D64370300B4C1DB /* barrelSmoke.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = barrelSmoke.scnp; sourceTree = "<group>"; };
+		A2D2B85C1D64370300B4C1DB /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
 		A2E464711D5EDF44009F884C /* MySceneKitGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySceneKitGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E464741D5EDF44009F884C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A2E464781D5EDF44009F884C /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +177,8 @@
 				A289BD1F1D61052200D2E53D /* Explode.scnp */,
 				A2E465381D5FDC0D009F884C /* Trail.scnp */,
 				A2E465391D5FDC0D009F884C /* spark.png */,
+				A2D2B85B1D64370300B4C1DB /* barrelSmoke.scnp */,
+				A2D2B85C1D64370300B4C1DB /* smoke.png */,
 			);
 			name = Particles;
 			sourceTree = "<group>";
@@ -283,6 +289,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2E4653A1D5FDC0D009F884C /* Trail.scnp in Resources */,
+				A2D2B85E1D64370300B4C1DB /* smoke.png in Resources */,
+				A2D2B85D1D64370300B4C1DB /* barrelSmoke.scnp in Resources */,
 				A2E4653B1D5FDC0D009F884C /* spark.png in Resources */,
 				A2E464811D5EDF45009F884C /* LaunchScreen.storyboard in Resources */,
 				A2E4647E1D5EDF45009F884C /* Assets.xcassets in Resources */,

@@ -54,7 +54,7 @@ class GameViewController: UIViewController {
     func setupCamera() {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 5, z: 17)
+        cameraNode.position = SCNVector3(x: 0, y: 3, z: 13)
         cameraNode.camera?.zFar = 200.0
         scnScene.rootNode.addChildNode(cameraNode)
     }
@@ -63,37 +63,35 @@ class GameViewController: UIViewController {
         var geometry : SCNGeometry
         geometry = SCNCone(topRadius: 1.5, bottomRadius: 2.0, height: 0.7)
         let physicsShape = SCNPhysicsShape(geometry: SCNTorus(ringRadius: 2.0, pipeRadius: 1.0), options: nil)
-        let geometryNode = SCNNode(geometry: geometry)
+        let diskNode = SCNNode(geometry: geometry)
         //nil for the physics shape will automatically generate a shape based on the geometry of the node
-        geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: physicsShape)
+        diskNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: physicsShape)
         let randomX = Float.random(min: 1, max: 10)
         let randomY = Float.random(min: 18, max: 30)
         let randomZ = Float.random(min: 13, max: 30)
         let randomSide = Int(arc4random_uniform(2))
         var force : SCNVector3
         if randomSide == 1 {
-            geometryNode.position.x = -8
+            diskNode.position.x = -8
             force = SCNVector3(x: randomX, y: randomY , z: -randomZ)
         } else {
-            geometryNode.position.x = 8
+            diskNode.position.x = 8
             force = SCNVector3(x: -randomX, y: randomY , z: -randomZ)
         }
-        geometryNode.physicsBody?.applyForce(force, impulse: true)
+        diskNode.physicsBody?.applyForce(force, impulse: true)
         geometry.materials.first?.diffuse.contents = UIColor.orangeColor()
-        geometryNode.name = "Disk"
-        scnScene.rootNode.addChildNode(geometryNode)
+        diskNode.name = "Disk"
+        diskNode.physicsBody?.collisionBitMask = 1
+        scnScene.rootNode.addChildNode(diskNode)
     }
     
     func fireGun(xTouch : CGFloat, yTouch : CGFloat) {
-//        let xDir = -(self.scnView.center.x - xTouch)/3
-//        let yDir = (self.scnView.frame.midY - yTouch)/3
-//        let direction = SCNVector3(xDir, yDir, -150)
-        let direction = SCNVector3(0, 0, -150)
-        let geometryNode = makeBullet()
-        geometryNode.physicsBody?.applyForce(direction, impulse: true)
-        geometryNode.position.z = -2
-        geometryNode.position.y = 1
-        gun.addChildNode(geometryNode)
+        let direction = (gun.childNodeWithName("Gun Sight", recursively: true)?.convertPosition(SCNVector3(0, 200, 0), toNode: scnScene.rootNode))!
+        let bulletNode = makeBullet()
+        bulletNode.physicsBody?.applyForce(direction, impulse: true)
+        bulletNode.position = (gun.childNodeWithName("Gun Sight", recursively: true)?.convertPosition(SCNVector3(0, 1, -2), toNode: scnScene.rootNode))!
+        scnScene.rootNode.addChildNode(bulletNode)
+        createBarrelSmoke()
     }
     
     func makeGun() -> SCNNode {
@@ -113,6 +111,7 @@ class GameViewController: UIViewController {
         gunBarrelNode.rotation.y = 0
         gunBarrelNode.rotation.z = 0
         gunBarrelNode.rotation.w = 29.85
+        gunBarrelNode.name = "Gun Barrel"
         gunStockNode.addChildNode(gunBarrelNode)
         
         let gunSightShape = SCNBox(width: 0.2, height: 1.0, length: 0.5, chamferRadius: 0)
@@ -120,45 +119,43 @@ class GameViewController: UIViewController {
         let gunSightNode = SCNNode(geometry: gunSightShape)
         gunSightNode.position.z = 0.5
         gunSightNode.position.y = 3.1
+        gunSightNode.name = "Gun Sight"
         gunBarrelNode.addChildNode(gunSightNode)
+        
+        //create invisible node at the tip of the gun for smoke
+        let gunTipShape = SCNSphere(radius: 0.4)
+        gunTipShape.materials.first?.diffuse.contents = UIColor.clearColor()
+        let gunTipNode = SCNNode(geometry: gunTipShape)
+        gunTipNode.position.y = 4
+        gunTipNode.name = "Gun Tip"
+        gunBarrelNode.addChildNode(gunTipNode)
+        
+        let crosshairsShape = SCNTorus(ringRadius: 0.7, pipeRadius: 0.1)
+        gunSightShape.materials.first?.diffuse.contents = UIColor.whiteColor()
+        let crosshairsNode = SCNNode(geometry: crosshairsShape)
+        crosshairsNode.position.y = 30
+        crosshairsNode.position.z = -1
+        gunBarrelNode.addChildNode(crosshairsNode)
         
         return gunStockNode
     }
     
     func pointGun(xTouch : CGFloat, yTouch : CGFloat) {
-        let xDir = (self.scnView.center.x - xTouch)/200
-        let yDir = (self.scnView.frame.midY - (yTouch - 50))/200
+        let xDir = (self.scnView.center.x - xTouch)/300
+        let yDir = (self.scnView.frame.midY - (yTouch - 100))/350
         let direction = SCNVector3(yDir, xDir, 0)
         gun.eulerAngles = direction
     }
     
-//    func fireBuckshot(xTouch : CGFloat, yTouch : CGFloat) {
-//        let xDir = -(self.scnView.center.x - xTouch)/1.5
-//        let yDir = (self.scnView.frame.midY - yTouch)/1.5
-//        let direction = SCNVector3(xDir, yDir, -300)
-//        let geometryNode1 = makeBullet()
-//        geometryNode1.physicsBody?.applyForce(direction, impulse: true)
-//        geometryNode1.position.y = 4
-//        let geometryNode2 = makeBullet()
-//        geometryNode2.physicsBody?.applyForce(direction, impulse: true)
-//        geometryNode2.position.y = 4.5
-//        let geometryNode3 = makeBullet()
-//        geometryNode3.physicsBody?.applyForce(direction, impulse: true)
-//        geometryNode3.position.y = 4
-//        geometryNode3.position.x = 0.5
-//        scnScene.rootNode.addChildNode(geometryNode1)
-//        scnScene.rootNode.addChildNode(geometryNode2)
-//        scnScene.rootNode.addChildNode(geometryNode3)
-//    }
-    
     func makeBullet() -> SCNNode {
-        let bullet = SCNNode(geometry: SCNSphere(radius: 0.1))
+        let bullet = SCNNode(geometry: SCNSphere(radius: 0.2))
         bullet.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
         bullet.physicsBody?.affectedByGravity = false
         bullet.geometry?.materials.first?.diffuse.contents = UIColor.blackColor()
         bullet.position.z = 20
         bullet.name = "bullet"
         bullet.physicsBody?.contactTestBitMask = 1
+        bullet.physicsBody?.collisionBitMask = 1
         return bullet
     }
     
@@ -225,15 +222,16 @@ class GameViewController: UIViewController {
         scnScene.addParticleSystem(explosion, withTransform: transformMatrix)
     }
     
-//    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
-//        if contact.nodeA.name == "bullet" {
-//            createExplosion(contact.nodeB.geometry!, position: contact.nodeB.presentationNode.position,
-//                            rotation: contact.nodeB.presentationNode.rotation)
-//        } else if contact.nodeB.name == "bullet" {
-//            createExplosion(contact.nodeA.geometry!, position: contact.nodeA.presentationNode.position,
-//                            rotation: contact.nodeA.presentationNode.rotation)
-//        }
-//    }
+    func createBarrelSmoke() {
+        let rotation = gun.childNodeWithName("Gun Tip", recursively: true)?.presentationNode.rotation
+        let position = (gun.childNodeWithName("Gun Tip", recursively: true)?.presentationNode.convertPosition(SCNVector3(0, 0, 0), toNode: scnScene.rootNode))!
+        let barrelSmoke = SCNParticleSystem(named: "barrelSmoke.scnp", inDirectory: nil)!
+        barrelSmoke.emitterShape = gun.childNodeWithName("Gun Tip", recursively: true)?.geometry
+        let rotationMatrix = SCNMatrix4MakeRotation(rotation!.w, rotation!.x, rotation!.y, rotation!.z)
+        let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
+        let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+        scnScene.addParticleSystem(barrelSmoke, withTransform: transformMatrix)
+    }
 }
 
 extension GameViewController : SCNSceneRendererDelegate {
@@ -253,7 +251,7 @@ extension GameViewController : SCNSceneRendererDelegate {
 extension GameViewController : SCNPhysicsContactDelegate {
     func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
         if contact.nodeA.name == "bullet" {
-            createExplosion(contact.nodeB.geometry!, position: contact.nodeB.presentationNode.position,
+            createExplosion(contact.nodeB.geometry!, position: contact.nodeA.presentationNode.position,
                             rotation: contact.nodeB.presentationNode.rotation)
         } else if contact.nodeB.name == "bullet" {
             createExplosion(contact.nodeA.geometry!, position: contact.nodeA.presentationNode.position,
