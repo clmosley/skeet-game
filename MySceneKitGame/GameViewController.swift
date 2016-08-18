@@ -246,7 +246,6 @@ extension GameViewController : SCNSceneRendererDelegate {
         }
         game.updateHUD()
     }
-}
 
 extension GameViewController : SCNPhysicsContactDelegate {
     func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
@@ -258,4 +257,4 @@ extension GameViewController : SCNPhysicsContactDelegate {
                             rotation: contact.nodeA.presentationNode.rotation)
         }
     }
-}
+}}
