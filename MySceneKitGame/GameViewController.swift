@@ -25,6 +25,7 @@ class GameViewController: UIViewController {
         setupCamera()
         gun = makeGun()
         setupHUD()
+        preloadAudio()
     }
     
     override func shouldAutorotate() -> Bool {
@@ -57,6 +58,13 @@ class GameViewController: UIViewController {
         cameraNode.position = SCNVector3(x: 0, y: 3, z: 13)
         cameraNode.camera?.zFar = 200.0
         scnScene.rootNode.addChildNode(cameraNode)
+    }
+    
+    func preloadAudio() {
+        SCNAudioSource(named: "ExplodeGood.wav")?.shouldStream = false
+        SCNAudioSource(named: "ExplodeBad.wav")?.shouldStream = false 
+        SCNAudioSource(named: "ExplodeGood.wav")!.load()
+        SCNAudioSource(named: "ExplodeBad.wav")!.load()
     }
     
     func spawnDisks() {
@@ -92,7 +100,7 @@ class GameViewController: UIViewController {
         bulletNode.position = (gun.childNodeWithName("Gun Sight", recursively: true)?.convertPosition(SCNVector3(0, 1, -2), toNode: scnScene.rootNode))!
         scnScene.rootNode.addChildNode(bulletNode)
         createBarrelSmoke()
-        gun.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeBad.wav")!, waitForCompletion: true))
+        gun.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeBad.wav")!, waitForCompletion: false))
     }
     
     func makeGun() -> SCNNode {
@@ -202,8 +210,7 @@ class GameViewController: UIViewController {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let bulletQueue = dispatch_queue_create("bullet queue", DISPATCH_QUEUE_SERIAL)
-        dispatch_async(bulletQueue) {
+        dispatch_async(dispatch_get_main_queue()) {
             let xTouch = touches.first?.locationInView(self.scnView).x
             let yTouch = touches.first?.locationInView(self.scnView).y
             self.fireGun(xTouch!, yTouch: yTouch!)
@@ -238,12 +245,10 @@ class GameViewController: UIViewController {
 extension GameViewController : SCNSceneRendererDelegate {
     func renderer(renderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
         if time > spawnTime {
-            let shapeQueue : dispatch_queue_t = dispatch_queue_create("shape queue", DISPATCH_QUEUE_SERIAL)
-            dispatch_async(shapeQueue) {
+            dispatch_async(dispatch_get_main_queue()) {
                 self.spawnDisks()
             }
-            let cleanUpQueue : dispatch_queue_t = dispatch_queue_create("clean up queue", DISPATCH_QUEUE_SERIAL)
-            dispatch_async(cleanUpQueue) {
+            dispatch_async(dispatch_get_main_queue()) {
                 self.cleanScene()
             }
             spawnTime = time + NSTimeInterval(Float.random(min: 1.0, max: 3.0))
@@ -257,11 +262,11 @@ extension GameViewController : SCNPhysicsContactDelegate {
         if contact.nodeA.name == "bullet" {
             createExplosion(contact.nodeB.geometry!, position: contact.nodeA.presentationNode.position,
                             rotation: contact.nodeB.presentationNode.rotation)
-            contact.nodeB.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeGood.wav")!, waitForCompletion: true))
+            contact.nodeB.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeGood.wav")!, waitForCompletion: false))
         } else if contact.nodeB.name == "bullet" {
             createExplosion(contact.nodeA.geometry!, position: contact.nodeA.presentationNode.position,
                             rotation: contact.nodeA.presentationNode.rotation)
-            contact.nodeA.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeGood.wav")!, waitForCompletion: true))
+            contact.nodeA.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeGood.wav")!, waitForCompletion: false))
         }
     }
 }
