@@ -92,6 +92,7 @@ class GameViewController: UIViewController {
         bulletNode.position = (gun.childNodeWithName("Gun Sight", recursively: true)?.convertPosition(SCNVector3(0, 1, -2), toNode: scnScene.rootNode))!
         scnScene.rootNode.addChildNode(bulletNode)
         createBarrelSmoke()
+        gun.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeBad.wav")!, waitForCompletion: true))
     }
     
     func makeGun() -> SCNNode {
@@ -241,20 +242,26 @@ extension GameViewController : SCNSceneRendererDelegate {
             dispatch_async(shapeQueue) {
                 self.spawnDisks()
             }
+            let cleanUpQueue : dispatch_queue_t = dispatch_queue_create("clean up queue", DISPATCH_QUEUE_SERIAL)
+            dispatch_async(cleanUpQueue) {
+                self.cleanScene()
+            }
             spawnTime = time + NSTimeInterval(Float.random(min: 1.0, max: 3.0))
-            cleanScene()
         }
         game.updateHUD()
     }
+}
 
 extension GameViewController : SCNPhysicsContactDelegate {
     func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
         if contact.nodeA.name == "bullet" {
             createExplosion(contact.nodeB.geometry!, position: contact.nodeA.presentationNode.position,
                             rotation: contact.nodeB.presentationNode.rotation)
+            contact.nodeB.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeGood.wav")!, waitForCompletion: true))
         } else if contact.nodeB.name == "bullet" {
             createExplosion(contact.nodeA.geometry!, position: contact.nodeA.presentationNode.position,
                             rotation: contact.nodeA.presentationNode.rotation)
+            contact.nodeA.runAction(SCNAction.playAudioSource(SCNAudioSource(named: "ExplodeGood.wav")!, waitForCompletion: true))
         }
     }
-}}
+}
